@@ -64,25 +64,35 @@ char plus( char integer1[] , char integer2[] )
 
 char mutiply( char integer1[] , char integer2[] )
 {
-	int count,minlen,maxlen,calcount = 0,judge;
+	int count , maxlen , minlen , calcount = 0 , judge;
 
-	if ( strlen( integer1 ) < strlen( integer2 ) )
+	if ( strlen( integer1 ) > strlen( integer2 ) )
 	{
-		minlen = strlen(integer1);
-		maxlen = strlen(integer2);
-		judge = 2;
-	}
-	else if ( strlen( integer2 ) < strlen( integer1 ) )
-	{
-		minlen = strlen(integer2);
 		maxlen = strlen(integer1);
+		minlen = strlen(integer2);
 		judge = 1;
+		
+		for ( count = minlen - 1 ; count < maxlen - 1 ; count++ )
+		{
+			integer1[count] = '0';
+		}
+	}
+	else if ( strlen( integer1 ) < strlen( integer2 ) )
+	{          
+		maxlen = strlen(integer2);
+		minlen = strlen(integer1);
+		judge = 2;
+		
+		for ( count = minlen - 1 ; count < maxlen - 1 ; count++ )
+		{
+			integer2[count] = '0';
+		}
 	}
 
 	char result2[50];
 	memset( result2 , '\0' , sizeof( result2 ) );
 
-	for( count = 1 ; count < minlen ; count++ )
+	for( count = 0 ; count < minlen ; count++ )
 	{
 		result2[count] = ( (int)integer1[count] * (int)integer2[count] + calcount ) % 10;
 		calcount = ( (int)integer1[count] * (int)integer2[count]  ) / 10;
