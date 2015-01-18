@@ -57,10 +57,9 @@ void Exchange( char String[] )
     }
 }
 
-char* Plus( char String1[] , char String2[])
+void Plus( char String1[] , char String2[], char Result[])
 {
     int Counter , Maxlen , Minlen , CalCounter = 0;
-    char Result[50];
 
     memset( Result , '\0' , 50 );
 
@@ -134,7 +133,6 @@ char* Plus( char String1[] , char String2[])
     }
 
     Exchange( Result );
-    return Result;
 }
 
 char* Mutiply( char String1[] , char String2[] )
@@ -158,6 +156,7 @@ char* Mutiply( char String1[] , char String2[] )
 int main( void )
 {
     char InputStorage[50] , *Input , Input1[50] , Input2[50] , Operator[50];
+    char Result[50];
     memset( Input1 , '\0' , 50 );
     memset( Input2 , '\0' , 50 );
     memset( Operator , '\0' , 50 );
@@ -181,7 +180,8 @@ int main( void )
     switch( (int)*Operator )
     {
         case '+':
-            printf( "Answer is: %s\n" , Plus( Input1 , Input2 ) );
+		Plus(Input1, Input2, Result);
+            printf( "Answer is: %s\n" , Result );
             exit(0);
             break;
         case '*':
