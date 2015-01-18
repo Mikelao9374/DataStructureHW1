@@ -27,11 +27,6 @@ void CheckOperator( char String[] )
             printf( "Error! Wrong input of operator!\n");
             exit(1);
         }
-        else if( String[ Counter ] != '+' && String[ Counter ] != '*' );
-        {
-            printf( "Error! Wrong input of operator!\n");
-            exit(1);
-        }
     }
 }
 
@@ -54,7 +49,7 @@ void Exchange( char String[] )
     int Counter;
     char Storage;
 
-    for ( Counter = 0 ; Counter < strlen( String ) ; Counter++ )
+    for ( Counter = 0 ; Counter < ( strlen( String ) / 2 ) ; Counter++ )
     {
         Storage = String[ Counter ];
         String[ Counter ] = String[ strlen( String ) - 1 - Counter ];
@@ -74,7 +69,7 @@ char* Plus( char String1[] , char String2[])
         Maxlen = strlen( String1 );
         Minlen = strlen( String2 );
 
-        for( Counter = 0 ; Counter < Minlen - 1 ; Counter++ )
+        for( Counter = 0 ; Counter < Minlen  ; Counter++ )
         {
             if( String1[ Counter ] + String2[ Counter ] + CalCounter - '0' > 9 )
             {
@@ -88,7 +83,7 @@ char* Plus( char String1[] , char String2[])
             }
         }
 
-        for ( Counter = Minlen - 1 ; Counter < Maxlen - 1 ; Counter++ )
+        for ( Counter = Minlen ; Counter < Maxlen  ; Counter++ )
         {
             Result[ Counter ] = String1[ Counter ] + CalCounter;
             CalCounter = 0;
@@ -99,29 +94,47 @@ char* Plus( char String1[] , char String2[])
         Maxlen = strlen( String2 );
         Minlen = strlen( String1 );
 
-        for( Counter = 0 ; Counter < Minlen - 1 ; Counter++ )
+        for( Counter = 0 ; Counter < Minlen ; Counter++ )
         {
-            if( String1[ Counter ] + String2[ Counter ] + CalCounter - '0' > 9 )
+            if( ( int )String1[ Counter ] + ( int )String2[ Counter ] + CalCounter - '0' > '9' )
             {
                 Result[ Counter ] = String1[ Counter ] + String2[ Counter ] - '0' - 10;
                 CalCounter = 1;
             }
-            else if( String1[ Counter ] + String2[ Counter ] + CalCounter - '0' < 10 )
+            else if( ( int )String1[ Counter ] + ( int )String2[ Counter ] + CalCounter - '0' <= '9' )
             {
                 Result[ Counter ] = String1[ Counter ] + String2[ Counter ] - '0';
                 CalCounter = 0;
             }
         }
 
-        for ( Counter = Minlen - 1 ; Counter < Maxlen - 1 ; Counter++ )
+        for ( Counter = Minlen - 1 ; Counter < Maxlen ; Counter++ )
         {
             Result[ Counter ] = String2[ Counter ] + CalCounter;
             CalCounter = 0;
         }
     }
+    else
+    {
+        Maxlen = strlen( String1 );
+
+        for( Counter = 0 ; Counter < Maxlen ; Counter++ )
+        {
+            if( ( int )String1[ Counter ] + ( int )String2[ Counter ] + CalCounter - '0' > '9' )
+            {
+                Result[ Counter ] = String1[ Counter ] + String2[ Counter ] - '0' - 10;
+                CalCounter = 1;
+            }
+            else if( ( int )String1[ Counter ] + ( int )String2[ Counter ] + CalCounter - '0' <= '9' )
+            {
+                Result[ Counter ] = String1[ Counter ] + String2[ Counter ] - '0';
+                CalCounter = 0;
+            }
+        }
+    }
 
     Exchange( Result );
-    return *Result;
+    return Result;
 }
 
 char* Mutiply( char String1[] , char String2[] )
@@ -151,11 +164,11 @@ int main( void )
 
     fgets( InputStorage , 50 , stdin );
 
-    Input = strtok( InputStorage , " " );
+    Input = strtok( InputStorage , " \n" );
     strcpy( Input1 , Input );
-    Input = strtok( NULL , " " );
+    Input = strtok( NULL , " \n" );
     strcpy( Operator , Input );
-    Input = strtok( NULL , " " );
+    Input = strtok( NULL , " \n" );
     strcpy( Input2 , Input );
 
     CheckFirstNumber( Input1 );
@@ -165,7 +178,7 @@ int main( void )
     Exchange( Input1 );
     Exchange( Input2 );
 
-    switch( (int)Operator )
+    switch( (int)*Operator )
     {
         case '+':
             printf( "Answer is: %s\n" , Plus( Input1 , Input2 ) );
