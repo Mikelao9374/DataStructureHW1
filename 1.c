@@ -13,10 +13,10 @@ void exchange( char string[] )
 		storage = string[count];
 		string[ count ] = string[ length - 1 - count];
 		string[ length - 1 - count ] = storage;
-	}	
+	}
 }
 
-char plus( char integer1[] , char integer2[] )
+char* plus( char integer1[] , char integer2[] )
 {
 	int count , maxlen , minlen , calcount = 0;
 
@@ -24,7 +24,7 @@ char plus( char integer1[] , char integer2[] )
 	{
 		maxlen = strlen( integer1 );
 		minlen = strlen( integer2 );
-		
+
 		for ( count = minlen - 1 ; count < maxlen - 1 ; count++ )
 		{
 			integer2[count] = '0';
@@ -33,8 +33,8 @@ char plus( char integer1[] , char integer2[] )
 	else if ( strlen( integer2 ) > strlen( integer2 ) )
 	{
 		maxlen = strlen( integer2 );
-		minlen = strlen( integer1 );		
-		
+		minlen = strlen( integer1 );
+
 		for ( count = minlen - 1 ; count < maxlen - 1 ; count++ )
 		{
 			integer1[count] = '0';
@@ -62,7 +62,7 @@ char plus( char integer1[] , char integer2[] )
 	return *result1;
 }
 
-char mutiply( char integer1[] , char integer2[] )
+char* mutiply( char integer1[] , char integer2[] )
 {
 	int count , maxlen , minlen , calcount = 0 , judge;
 
@@ -71,18 +71,18 @@ char mutiply( char integer1[] , char integer2[] )
 		maxlen = strlen(integer1);
 		minlen = strlen(integer2);
 		judge = 1;
-		
+
 		for ( count = minlen - 1 ; count < maxlen - 1 ; count++ )
 		{
 			integer1[count] = '0';
 		}
 	}
 	else if ( strlen( integer1 ) < strlen( integer2 ) )
-	{          
+	{
 		maxlen = strlen(integer2);
 		minlen = strlen(integer1);
 		judge = 2;
-		
+
 		for ( count = minlen - 1 ; count < maxlen - 1 ; count++ )
 		{
 			integer2[count] = '0';
@@ -120,29 +120,42 @@ char mutiply( char integer1[] , char integer2[] )
 }
 int main( void )
 {
-	char input1[50],input2[50];
+	char input[50] , input1[50] , input2[50];
 	char operator;
+    int count;
 
-	scanf( "%s" , input1 );
-	getc(stdin);
-	scanf( "%c" , &operator );
-	getc(stdin);
-	scanf( "%s" , input2 );
+    memset(input , '\0' ,50);
+    memset(input1 , '\0' ,50);
+    memset(input2 , '\0' ,50);
+
+    fgets( input , 50 , stdin );
+
+    for( count = 0 ; input[count] != ' ' ; count++ )
+    {
+        input1[count] = input[count];
+    }
+
+    count++;
+
+    operator = input[count];
+
+    count += 2;
+
+    for( count ; input[count] != ' ' && input[count] != '\0' ; count++ )
+    {
+        input1[count] = input[count];
+    }
 
 	exchange(input1);
 	exchange(input2);
 
-	printf("input1: %s" , input1 );
-	printf("operator: %c" , operator );
-	printf("input2: %s" , input2 );
-
 	switch( (int)operator )
 	{
 		case 43:
-			printf( "Answer: %s\n", plus( input1 , input2 ) );
+			printf( "Answer: %s\n", *plus( input1 , input2 ) );
 			break;
 		case 45:
-			printf( "Answer: %s\n", mutiply( input1 , input2 ) );
+			printf( "Answer: %s\n", *mutiply( input1 , input2 ) );
 			break;
 		default:
 			printf( "Wrong operator!\n" );
