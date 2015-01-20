@@ -56,7 +56,12 @@ mult(char* input1, char* input2, char* result)
 		}
 	}
 
-	result[input1_len + input2_len - 1] = '\0';
+	if (carry_value > 0) {
+		result[input1_len + input2_len - 1] = '0' + carry_value;
+		result[input1_len + input2_len] = '\0';
+	} else {
+		result[input1_len + input2_len - 1] = '\0';
+	}
 
 	reverse(input1);
 	reverse(input2);
@@ -68,12 +73,12 @@ mult(char* input1, char* input2, char* result)
 int
 main(int argc, char* argv[])
 {
-	char input1[] = "22";
-	char input2[] = "124";
+	char input1[] = "20";
+	char input2[] = "2";
 	char* result = NULL;
 
 	result = (char*) malloc((strlen(input1) + strlen(input2))*
-				sizeof(char));
+				sizeof(char) + 1);
 
 	mult(input1, input2, result);
 
