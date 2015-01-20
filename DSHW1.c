@@ -2,6 +2,8 @@
 #include<stdlib.h>
 #include<string.h>
 
+char Result[50];
+
 void CheckFirstNumber( char String[] )
 {
     int Counter;
@@ -57,11 +59,9 @@ void Exchange( char String[] )
     }
 }
 
-void Plus( char String1[] , char String2[], char Result[])
+void Plus( char String1[] , char String2[] , char Result[])
 {
     int Counter , Maxlen , Minlen , CalCounter = 0;
-
-    memset( Result , '\0' , 50 );
 
     if( strlen( String1 ) > strlen( String2 ) )
     {
@@ -131,35 +131,53 @@ void Plus( char String1[] , char String2[], char Result[])
             }
         }
     }
+}
+
+void Mutiply( char String1[] , char String2[] , char Result[] )
+{
+    int Counter1 , Counter2 , CalCounter = 0;
+
+    for( Counter1 = 0 ; Counter1 < strlen( String1 )  ; Counter1++ )
+    {
+        for( Counter2 = 0 ; Counter2 < strlen( String2 )  ; Counter2++ )
+        {
+            if( Result[ Counter1 + Counter2 ] == '\0' )
+            {
+                Result[ Counter1 + Counter2 ] = '0';
+            }
+
+            if ( Result[ Counter1 + Counter2 ] + CalCounter + ( String1[ Counter1 ] - '0' ) * ( String2[ Counter2 ] - '0' ) % 10 > '9' )
+            {
+                Result[ Counter2 ] = Result[ Counter2 ] + CalCounter + ( String1[ Counter1 ] - '0' ) * ( String2[ Counter2 ] - '0' ) % 10 - 10;
+                CalCounter = ( ( String1[ Counter1 ] - '0' ) * ( String2[ Counter2 ] - '0' ) / 10 ) + 1;
+            }
+            else
+            {
+                Result[ Counter2 ] = Result[ Counter2 ] + CalCounter + ( String1[ Counter1 ] - '0' ) * ( String2[ Counter2 ] - '0' ) % 10;
+                CalCounter = ( String1[ Counter1 ] - '0' ) * ( String2[ Counter2 ] - '0' ) / 10;
+            }
+        }
+        if( CalCounter != 0 )
+        {
+            if( Result[ Counter2 ] == '\0' )
+            {
+                Result[ Counter2 ] = '0';
+            }
+            Result[ Counter2 ] = Result[ Counter2 ] + CalCounter;
+            CalCounter = 0;
+        }
+    }
 
     Exchange( Result );
 }
 
-char* Mutiply( char String1[] , char String2[] )
-{
-    int Counter1 , Counter2 , CalCounter = 0;
-    char Result[50];
-
-    memset( Result , '0' , 50 );
-
-    for( Counter1 = 0 ; Counter1 < strlen( String1 ) - 1 ; Counter1++ )
-    {
-        for( Counter2 = 0 ; Counter2 < strlen( String2 ) - 1 ; Counter2++ )
-        {
-            Result[ Counter2 ] = Result[ Counter2 ] + ( String1[ Counter1 ] - '0' ) * ( String2[ Counter2 ] - '0' ) % 10;
-            CalCounter = ( String1[ Counter1 ] - '0' ) * ( String2[ Counter2 ] - '0' ) / 10;
-        }
-        Result[ Counter2 ] = Result[ Counter2 ] + CalCounter;
-    }
-}
-
 int main( void )
 {
-    char InputStorage[50] , *Input , Input1[50] , Input2[50] , Operator[50];
-    char Result[50];
+    char InputStorage[50] , *Input , Input1[50] , Input2[50] , Operator[50] , Result[50];
     memset( Input1 , '\0' , 50 );
     memset( Input2 , '\0' , 50 );
     memset( Operator , '\0' , 50 );
+    memset( Result , '\0' , 50 );
 
     fgets( InputStorage , 50 , stdin );
 
@@ -180,12 +198,13 @@ int main( void )
     switch( (int)*Operator )
     {
         case '+':
-		Plus(Input1, Input2, Result);
+            Plus( Input1 , Input2 , Result );
             printf( "Answer is: %s\n" , Result );
             exit(0);
             break;
         case '*':
-            printf( "Answer is: %s\n" , Mutiply( Input1 , Input2 ) );
+            Mutiply( Input1 , Input2 , Result );
+            printf( "Answer is: %s\n" , Result );
             exit(0);
             break;
         default:
