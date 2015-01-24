@@ -1,5 +1,8 @@
-CXX = gcc
-CXX_FLAGS = -Wall -std=gnu99
+CC = gcc
+CC_FLAGS = -Wall -std=gnu99
+
+CXX = g++
+CXX_FLAGS = -Wall -std=c++11
 
 SRC_DIR = src
 INC_DIR = inc
@@ -13,14 +16,18 @@ LIBS =
 
 OUT_EXE = math
 
+all: $(OUT_EXE)
+
+include ./mk/tests.mk
+
 $(OUT_EXE): $(OBJS)
 	@echo "LD     $@"
-	@$(CXX) $^ $(CXX_FLAGS) $(INCS) $(LIBS) -o $@
+	@$(CC) $^ $(CC_FLAGS) $(INCS) $(LIBS) -o $@
 
 $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@echo "CC     $(notdir $@)"
-	@$(CXX) $< -c $(CXX_FLAGS) $(INCS) -o $@
+	@$(CC) $< -c $(CC_FLAGS) $(INCS) -o $@
 
 .PHONY: clean
 clean:
